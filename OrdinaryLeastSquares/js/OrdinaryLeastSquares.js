@@ -2,39 +2,103 @@
 
 window.OrdinaryLeastSquaresComponent = flight.component(function() {
 
-        this.redrawGraphic = function () {
-            // данные для графиков
-            var all_data = [
-                { data: [["2010/10/01", 0], ["2010/10/5", 1],
-                    ["2010/10/10", 7], ["2010/10/15", 8]]},
-                { data: [["2010/10/01", 13], ["2010/10/5", 23],
-                    ["2010/10/10", 32], ["2010/10/15", 33]]}
-            ];
-            // преобразуем даты в UTC
-            for(var j = 0; j < all_data.length; ++j) {
-                for(var i = 0; i < all_data[j].data.length; ++i)
-                    all_data[j].data[i][0] = Date.parse(all_data[j].data[i][0]);
-            }
-            // свойства графика
-            var plot_conf = {
-                series: {
-                    lines: {
-                        show: true,
-                        lineWidth: 2
-                    }
-                },
-                xaxis: {
-                    mode: "time",
-                    timeformat: "%y/%m/%d"
-                }
-            };
-            // выводим график
-            $.plot($("#placeholder"), all_data, plot_conf);
-        };
+    this.pointsData = {};
+    this.plotConf;
 
-        return this.after('initialize', function() {
-            return this.redrawGraphic();
-        });
+    this.params = {
+        "xmin": -2,
+        "xmax": 2,
+        "ymin": -2,
+        "ymax": 2,
+        "xticks": 10,
+        "yticks": 10,
+        "XtickDecimal": 2,
+        "YtickDecimal": 2
+    };
+
+    this.updateFlotConfig = function () {
+        this.plotConf = {
+            xaxis: {
+                ticks: this.params["xticks"],
+                min: this.params["xmin"],
+                max: this.params["xmax"],
+                tickDecimals: this.params["XtickDecimal"]
+            },
+            yaxis: {
+                ticks: this.params["yticks"],
+                min: this.params["ymin"],
+                max: this.params["ymax"],
+                tickDecimals: this.params["YtickDecimal"]
+            }
+        };
+    };
+
+    this.zoomTick = 0.5;
+    this.zoomMax = 30;
+    this.zoomMin = 1;
+    this.addZoom = function () {
+        if (this.params["xmax"] < this.zoomMax) {
+            this.params["xmin"] -= this.zoomTick;
+            this.params["xmax"] += this.zoomTick;
+            this.params["ymin"] -= this.zoomTick;
+            this.params["ymax"] += this.zoomTick;
+        }
+    };
+
+    this.reduceZoom = function() {
+        if (this.params["xmax"] > this.zoomMin) {
+            this.params["xmin"] += this.zoomTick;
+            this.params["xmax"] -= this.zoomTick;
+            this.params["ymin"] += this.zoomTick;
+            this.params["ymax"] -= this.zoomTick;
+        }
+    };
+
+    this.redrawGraphic = function () {
+        this.updateFlotConfig();
+
+        var d1 = [];
+        for (var i = 0; i < Math.PI * 2; i += 0.25) {
+            d1.push([i, Math.sin(i)]);
+        }
+
+        var d2 = [];
+        for (var i = 0; i < Math.PI * 2; i += 0.25) {
+            d2.push([i, Math.cos(i)]);
+        }
+
+        var d3 = [];
+        for (var i = 0; i < Math.PI * 2; i += 0.1) {
+            d3.push([i, Math.tan(i)]);
+        }
+        this.pointsData = [
+            { label: "sin(x)", data: d1 },
+            { label: "cos(x)", data: d2 },
+            { label: "tan(x)", data: d3 }
+        ];
+
+        // выводим график
+        $.plot($("#placeholder"), this.pointsData, this.plotConf);
+    };
+
+//  MOUSE EVENTS
+
+    this.onWheel = function (e) {
+        e = e || window.event;
+        if (e.deltaY > 0) {
+            this.addZoom()
+        } else if (e.deltaY < 0) {
+            this.reduceZoom();
+        }
+        this.redrawGraphic();
+    };
+
+    return this.after('initialize', function() {
+       this.on('wheel', function() {
+          this.onWheel();
+       });
+       return this.redrawGraphic();
     });
+});
 
 OrdinaryLeastSquaresComponent.attachTo('body');
