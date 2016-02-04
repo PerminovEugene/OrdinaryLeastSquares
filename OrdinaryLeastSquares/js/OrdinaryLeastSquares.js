@@ -1,6 +1,8 @@
 'use strict';
 
-window.OrdinaryLeastSquaresComponent = flight.component(function() {
+window.OrdinaryLeastSquaresComponent = flight.component(
+    window.OLSMixin,
+    function() {
 
     this.pointsData = {};
     this.plotConf;
@@ -16,6 +18,14 @@ window.OrdinaryLeastSquaresComponent = flight.component(function() {
         "YtickDecimal": 2
     };
 
+    this.getMinX = function () {
+        return this.params["xmin"]
+    };
+
+    this.getMaxX = function () {
+        return this.params["xmax"]
+    };
+
     this.updateFlotConfig = function () {
         this.plotConf = {
             xaxis: {
@@ -29,8 +39,10 @@ window.OrdinaryLeastSquaresComponent = flight.component(function() {
                 min: this.params["ymin"],
                 max: this.params["ymax"],
                 tickDecimals: this.params["YtickDecimal"]
-            }
+            },
+            points: { show: true, radius: 2, lineWidth: 5, fill: false }
         };
+
     };
 
     this.zoomTick = 0.5;
@@ -56,29 +68,7 @@ window.OrdinaryLeastSquaresComponent = flight.component(function() {
 
     this.redrawGraphic = function () {
         this.updateFlotConfig();
-
-        var d1 = [];
-        for (var i = 0; i < Math.PI * 2; i += 0.25) {
-            d1.push([i, Math.sin(i)]);
-        }
-
-        var d2 = [];
-        for (var i = 0; i < Math.PI * 2; i += 0.25) {
-            d2.push([i, Math.cos(i)]);
-        }
-
-        var d3 = [];
-        for (var i = 0; i < Math.PI * 2; i += 0.1) {
-            d3.push([i, Math.tan(i)]);
-        }
-        this.pointsData = [
-            { label: "sin(x)", data: d1 },
-            { label: "cos(x)", data: d2 },
-            { label: "tan(x)", data: d3 }
-        ];
-
-        // выводим график
-        $.plot($("#placeholder"), this.pointsData, this.plotConf);
+        $.plot($("#placeholder"), this.pointsData, this.plotConf );
     };
 
 //  MOUSE EVENTS
@@ -97,7 +87,10 @@ window.OrdinaryLeastSquaresComponent = flight.component(function() {
        this.on('wheel', function() {
           this.onWheel();
        });
-       return this.redrawGraphic();
+       this.on('redraw-graph', function() {
+           this.redrawGraphic();
+       });
+//       return this.redrawGraphic();
     });
 });
 

@@ -27,8 +27,29 @@
         Для отображения данных необходимо включить JavaScript!
     </strong></noscript></p>
 
-    <div class="col-sm-12">
+    <div class="col-sm-10">
         <div id="placeholder" style="width:800px;height:800px;"></div>
+    </div>
+    <div class="col-sm-2">
+        <div class="col-sm-12">
+            <button class="js-start-ols"> Start </button>
+        </div>
+        <div class="col-sm-11">
+            <label for="point-count">Points count</label>
+            <input class="col-sm-12" id="point-count" value="10">
+        </div>
+        <div class="col-sm-12">
+            <label for="select-function">Select function</label>
+            <select id="select-function">
+                <option class="function-option" value="cos"> y = cos(2*Pi*X) </option>
+                <option class="function-option" value="polynomial"> y = 5*x^3+x^2+5 </option>
+                <option class="function-option" value="sin"> y = x*sin(2*Pi*X) </option>
+            </select>
+        </div>
+        <div class="col-sm-12">
+        </div>
+        <div class="col-sm-12">
+        </div>
     </div>
 
     <script src="../js/Flot/jquery.js"></script>
@@ -53,6 +74,7 @@
 
 
     <script type="text/javascript" charset="utf-8" src="../js/Flight/twitter_flight.js"></script>
+    <script src="../js/OLS.js"></script>
     <script src="../js/OrdinaryLeastSquares.js"></script>
     </body>
 </html>
