@@ -1,7 +1,8 @@
 'use strict';
 
 window.OrdinaryLeastSquaresComponent = flight.component(
-    window.OLSMixin,
+    window.OLSDataMixin,
+    window.OLSAlgorithmMixin,
     function() {
 
     this.pointsData = {};
