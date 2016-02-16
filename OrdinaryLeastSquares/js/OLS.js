@@ -62,7 +62,7 @@ window.OLSMixin = function() {
                this.currentFunction = this.polyFinder;
                break
            }
-           case ' sin': {
+           case 'sin': {
                this.currentFunction = this.sinFinder;
                break
            }
