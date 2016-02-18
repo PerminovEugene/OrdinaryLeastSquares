@@ -21,6 +21,7 @@ window.OLSAlgorithmMixin = function() {
             }
 
             this.resultPoints.push([pointX, pointY]);
+
             i++;
         }
     };
@@ -60,11 +61,6 @@ window.OLSAlgorithmMixin = function() {
 
     };
 
-    this.start = function () {
-        var A = this.generateMatrA();
-        this.generateFreeCoefficient(A);
-    };
-
     this.generateMatrA = function () {
         var A = [], i = 0, j = 0;
         var basis = this.degreeApproximatingFunction;
@@ -94,9 +90,23 @@ window.OLSAlgorithmMixin = function() {
         return A
     };
 
+    this.startAlgorithm = function () {
+        var A = this.generateMatrA();
+        this.generateFreeCoefficient(A);
+    };
+
+    this.startWithCrossValidation = function () {
+        debugger
+        var A = this.generateMatrA();
+        this.generateFreeCoefficient(A);
+    };
+
     return this.after('initialize', function() {
-        this.on('start-algorithm', function() {
-            this.start();
+        this.on('start-algorithm-standart', function() {
+            this.startAlgorithm();
+        });
+        this.on('start-algorithm-cross-validation', function() {
+            this.startWithCrossValidation();
         });
     });
 };

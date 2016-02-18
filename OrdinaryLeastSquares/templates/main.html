@@ -8,7 +8,7 @@
     <title>Ordinary Least Squares</title>
 
     <!-- Bootstrap -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -31,19 +31,20 @@
         <div id="placeholder" style="width:800px;height:800px;"></div>
     </div>
     <div class="col-sm-2">
-        <div class="col-sm-12">
+        <div class="col-sm-12" style="margin-bottom: 15px">
             <button class="js-start-ols"> Start </button>
         </div>
-        <div class="col-sm-11">
+
+        <div class="col-sm-11" style="margin-bottom: 15px">
             <label for="point-count">Points count</label>
             <input class="col-sm-12" id="point-count" value="10">
         </div>
 
-        <div class="col-sm-11">
+        <div class="col-sm-11" style="margin-bottom: 15px">
             <label for="degree_approximating_function">Degree approximating function</label>
             <input class="col-sm-12" id="degree_approximating_function" value="3">
         </div>
-        <div class="col-sm-12">
+        <div class="col-sm-12" style="margin-bottom: 15px">
             <label for="select-function">Select function</label>
             <select id="select-function">
                 <option class="function-option" value="cos"> y = cos(2*Pi*X) </option>
@@ -51,6 +52,27 @@
                 <option class="function-option" value="sin"> y = x*sin(2*Pi*X) </option>
             </select>
         </div>
+
+        <div class="col-sm-11 " style="margin-bottom: 15px">
+            <input type="checkbox" name="show-source-function" value="show" id="show-source-function"> Show source function <Br>
+        </div>
+
+        <div class="col-sm-12 cross-validation-part" style="margin-bottom: 15px">
+            <label for="select-function">Algorithm features</label>
+            <select id="select-algorithm-feature">
+                <option class="algorithm-feature-option" value="standart"> Standart </option>
+                <option class="algorithm-feature-option" value="cross-validation"> With cross-validation </option>
+            </select>
+        </div>
+
+        <div class="col-sm-11 js-cross-validation-part hidden" style="margin-bottom: 15px">
+            <label for="degree_approximating_function">Number of groups for cross validation</label>
+            <input class="col-sm-12" id="cross-validation-groups" value="3">
+        </div>
+
+
+
+
         <div class="col-sm-12">
         </div>
         <div class="col-sm-12">

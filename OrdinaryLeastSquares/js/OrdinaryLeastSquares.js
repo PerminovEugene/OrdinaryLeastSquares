@@ -40,8 +40,7 @@ window.OrdinaryLeastSquaresComponent = flight.component(
                 min: this.params["ymin"],
                 max: this.params["ymax"],
                 tickDecimals: this.params["YtickDecimal"]
-            },
-            points: { show: true, radius: 2, lineWidth: 5, fill: false }
+            }
         };
 
     };
@@ -91,7 +90,6 @@ window.OrdinaryLeastSquaresComponent = flight.component(
        this.on('redraw-graph', function() {
            this.redrawGraphic();
        });
-//       return this.redrawGraphic();
     });
 });
 
