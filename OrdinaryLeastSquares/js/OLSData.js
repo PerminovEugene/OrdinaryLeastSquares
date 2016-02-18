@@ -10,12 +10,14 @@ window.OLSDataMixin = function() {
         degreeApproximatingFunctionSelector: '#degree_approximating_function',
         algorithmFeatureSelector: '#select-algorithm-feature',
         crossValidationBlock: '.js-cross-validation-part',
-        showSourceFunctionCheckbox: '#show-source-function'
+        showSourceFunctionCheckbox: '#show-source-function',
+        crossValidationGroupsSelector: '#cross-validation-groups'
     });
 
     this.pointsCount = 10;
     this.degreeApproximatingFunction = 1;
     this.olsAlgorithmFunction = "standart";
+    this.crossValidationGroups = 2;
 //    this.MAXIMUM_FUNCTION_DEGREE = 9;
 
     this.cosFinder = function (x) {
@@ -82,34 +84,31 @@ window.OLSDataMixin = function() {
     this.getDataAboutOLS = function() {
        this.pointsCount = parseFloat(this.select('pointsCounterInput').val());
        this.degreeApproximatingFunction = parseInt(this.select('degreeApproximatingFunctionSelector').val());
-//       if ((this.degreeApproximatingFunction > this.MAXIMUM_FUNCTION_DEGREE) ||(this.degreeApproximatingFunction < 1)) {
-//           alert("Degree aproximating function must be less then 10 and more then 0!")
-//       }
-//       else {
-           var func = this.select('functionSelector').val();
-           switch (func) {
-               case 'cos':
-               {
-                   this.currentFunction = this.cosFinder;
-                   break;
-               }
-               case 'polynomial':
-               {
-                   this.currentFunction = this.polyFinder;
-                   break;
-               }
-               case 'sin':
-               {
-                   this.currentFunction = this.sinFinder;
-                   break;
-               }
-               default:
-               {
-                   this.currentFunction = this.cosFinder;
-               }
+       this.crossValidationGroups = parseFloat(this.select('crossValidationGroupsSelector').val());
+
+        var func = this.select('functionSelector').val();
+       switch (func) {
+           case 'cos':
+           {
+               this.currentFunction = this.cosFinder;
+               break;
            }
-           this.startOLS();
-//       }
+           case 'polynomial':
+           {
+               this.currentFunction = this.polyFinder;
+               break;
+           }
+           case 'sin':
+           {
+               this.currentFunction = this.sinFinder;
+               break;
+           }
+           default:
+           {
+               this.currentFunction = this.cosFinder;
+           }
+       }
+       this.startOLS();
     };
 
     this.algorithmFeatrue = function () {

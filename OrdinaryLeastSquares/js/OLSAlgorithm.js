@@ -25,7 +25,7 @@ window.OLSAlgorithmMixin = function() {
         }
     };
 
-    this.generateFreeCoefficient = function (A) {
+    this.gaussSystemSolution = function (A) {
         var basis = this.degreeApproximatingFunction;
         var B = [];
         for (i = 0; i < basis; i++)
@@ -55,12 +55,11 @@ window.OLSAlgorithmMixin = function() {
             }
             B[i] = B[i] / A[i][i];
         }
-        this.result = B;
-        this.generateResultFunction();
+        return B;
 
     };
 
-    this.generateMatrA = function () {
+    this.generateMatrA = function (sourcePoints) {
         var A = [], i = 0, j = 0;
         var basis = this.degreeApproximatingFunction;
         for (i = 0; i < basis; i++)
@@ -77,10 +76,10 @@ window.OLSAlgorithmMixin = function() {
             for (j = 0; j < basis; j++)
             {
                 var sumA = 0, sumB = 0, k = 0;
-                for (k = 0; k < this.sourcePoints.length / 2; k++)
+                for (k = 0; k < sourcePoints.length / 2; k++)
                 {
-                    sumA += Math.pow(this.sourcePoints[k][0], i) * Math.pow(this.sourcePoints[k][0], j);
-                    sumB += this.sourcePoints[k][1] * Math.pow(this.sourcePoints[k][0], i);
+                    sumA += Math.pow(sourcePoints[k][0], i) * Math.pow(sourcePoints[k][0], j);
+                    sumB += sourcePoints[k][1] * Math.pow(sourcePoints[k][0], i);
                 }
                 A[i][j] = sumA;
                 A[i][basis] = sumB;
@@ -90,14 +89,43 @@ window.OLSAlgorithmMixin = function() {
     };
 
     this.startAlgorithm = function () {
-        var A = this.generateMatrA();
-        this.generateFreeCoefficient(A);
+        var A = this.generateMatrA(this.sourcePoints);
+        this.result = this.gaussSystemSolution(A);
+        this.generateResultFunction();
     };
 
     this.startWithCrossValidation = function () {
-        debugger
-        var A = this.generateMatrA();
-        this.generateFreeCoefficient(A);
+        var trainingPoints = [];
+        var controlPoints = [];
+        var controlCoefficients = [];
+        var pointsInGroup = this.sourcePoints.length / this.crossValidationGroups;
+
+        var groupNumber = 0;
+        while (groupNumber < this.crossValidationGroups) {
+            trainingPoints = [];
+            controlPoints = [];
+            controlCoefficients = [];
+            var point = 0;
+            while (point < this.sourcePoints.length) {
+                if ((point > groupNumber * pointsInGroup) && (point < (groupNumber + 1) * pointsInGroup)) {
+                    controlPoints.push(this.sourcePoints[point]);
+                } else {
+                    trainingPoints.push(this.sourcePoints[point]);
+                }
+
+                point++
+            }
+            var A = this.generateMatrA(trainingPoints);
+            controlCoefficients.push(this.gaussSystemSolution(A)); //TODO THERE NEED ADD MANY CODe
+            this.generateResultFunction();
+
+            groupNumber++
+        }
+
+
+        var A = this.generateMatrA(this.sourcePoints);
+        this.result = this.gaussSystemSolution(A);
+        this.gaussSystemSolution(A);
     };
 
     return this.after('initialize', function() {
