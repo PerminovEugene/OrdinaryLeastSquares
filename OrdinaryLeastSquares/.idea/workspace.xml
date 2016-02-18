@@ -44,7 +44,7 @@
       <file leaf-file-name="OrdinaryLeastSquares.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/OrdinaryLeastSquares.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="295" max-vertical-offset="1515">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1515">
               <caret line="37" column="20" selection-start-line="37" selection-start-column="20" selection-end-line="37" selection-end-column="20" />
               <folding />
             </state>
@@ -54,8 +54,8 @@
       <file leaf-file-name="OLSData.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/OLSData.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1195" max-vertical-offset="2100">
-              <caret line="42" column="57" selection-start-line="42" selection-start-column="57" selection-end-line="42" selection-end-column="57" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="675" max-vertical-offset="2100">
+              <caret line="64" column="99" selection-start-line="64" selection-start-column="99" selection-end-line="64" selection-end-column="99" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -66,8 +66,8 @@
       <file leaf-file-name="OLSAlgorithm.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/OLSAlgorithm.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.52755904" vertical-offset="1105" max-vertical-offset="1740">
-              <caret line="98" column="16" selection-start-line="98" selection-start-column="16" selection-end-line="98" selection-end-column="16" />
+            <state vertical-scroll-proportion="-0.9212598" vertical-offset="900" max-vertical-offset="1725">
+              <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -478,12 +478,12 @@
       <workItem from="1454496381780" duration="2695000" />
       <workItem from="1454562501038" duration="14049000" />
       <workItem from="1455607393047" duration="9535000" />
-      <workItem from="1455777175777" duration="5849000" />
+      <workItem from="1455777175777" duration="6408000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32128000" />
+    <option name="totallyTimeSpent" value="32687000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
@@ -738,8 +738,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/OLSData.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1195" max-vertical-offset="2100">
-          <caret line="42" column="57" selection-start-line="42" selection-start-column="57" selection-end-line="42" selection-end-column="57" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="675" max-vertical-offset="2100">
+          <caret line="64" column="99" selection-start-line="64" selection-start-column="99" selection-end-line="64" selection-end-column="99" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
@@ -748,8 +748,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/OLSAlgorithm.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.52755904" vertical-offset="1105" max-vertical-offset="1740">
-          <caret line="98" column="16" selection-start-line="98" selection-start-column="16" selection-end-line="98" selection-end-column="16" />
+        <state vertical-scroll-proportion="-0.9212598" vertical-offset="900" max-vertical-offset="1725">
+          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
           <folding />
         </state>
       </provider>

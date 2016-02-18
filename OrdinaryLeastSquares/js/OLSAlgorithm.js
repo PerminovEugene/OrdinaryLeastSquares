@@ -10,10 +10,10 @@ window.OLSAlgorithmMixin = function() {
     this.generateResultFunction = function () {
         this.resultPoints = [];
         var i = 0;
-        var min = this.getMinX();
+        var pointX = this.getMinX();
         var max = this.getMaxX();
-        while (i < 10000) {
-            var pointX = Math.random() * (max - min) + min;
+        var step = (max -pointX) / 1000;
+        while (pointX < max) {
             var pointY = 0;
             var j;
             for (j = 0; j < this.result.length; j++) {
@@ -21,8 +21,7 @@ window.OLSAlgorithmMixin = function() {
             }
 
             this.resultPoints.push([pointX, pointY]);
-
-            i++;
+            pointX += step;
         }
     };
 

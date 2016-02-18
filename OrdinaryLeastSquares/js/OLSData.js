@@ -16,7 +16,7 @@ window.OLSDataMixin = function() {
     this.pointsCount = 10;
     this.degreeApproximatingFunction = 1;
     this.olsAlgorithmFunction = "standart";
-    this.MAXIMUM_FUNCTION_DEGREE = 9;
+//    this.MAXIMUM_FUNCTION_DEGREE = 9;
 
     this.cosFinder = function (x) {
         return Math.cos(2 * Math.PI * x);
@@ -62,7 +62,7 @@ window.OLSDataMixin = function() {
 
     this.componateAllPointsData = function() {
         this.pointsData = [
-            { label: "Finded function", data: this.resultPoints, points: { show: true, radius: 2, fill: false } },
+            { label: "Finded function", data: this.resultPoints, lines: { show: true, fill: false } },
             { label: "Source points", data: this.sourcePoints, points: { show: true, radius: 2, lineWidth: 5, fill: false } }
         ];
         if (this.select('showSourceFunctionCheckbox')[0].checked) {
@@ -82,10 +82,10 @@ window.OLSDataMixin = function() {
     this.getDataAboutOLS = function() {
        this.pointsCount = parseFloat(this.select('pointsCounterInput').val());
        this.degreeApproximatingFunction = parseInt(this.select('degreeApproximatingFunctionSelector').val());
-       if ((this.degreeApproximatingFunction > this.MAXIMUM_FUNCTION_DEGREE) ||(this.degreeApproximatingFunction < 1)) {
-           alert("Degree aproximating function must be less then 10 and more then 0!")
-       }
-       else {
+//       if ((this.degreeApproximatingFunction > this.MAXIMUM_FUNCTION_DEGREE) ||(this.degreeApproximatingFunction < 1)) {
+//           alert("Degree aproximating function must be less then 10 and more then 0!")
+//       }
+//       else {
            var func = this.select('functionSelector').val();
            switch (func) {
                case 'cos':
@@ -109,7 +109,7 @@ window.OLSDataMixin = function() {
                }
            }
            this.startOLS();
-       }
+//       }
     };
 
     this.algorithmFeatrue = function () {
