@@ -11,7 +11,8 @@ window.OLSDataMixin = function() {
         algorithmFeatureSelector: '#select-algorithm-feature',
         crossValidationBlock: '.js-cross-validation-part',
         showSourceFunctionCheckbox: '#show-source-function',
-        crossValidationGroupsSelector: '#cross-validation-groups'
+        crossValidationGroupsSelector: '#cross-validation-groups',
+        completeStandartAndCrossCheckbox: '#show-standart-function-resul'
     });
 
     this.pointsCount = 10;
@@ -63,20 +64,32 @@ window.OLSDataMixin = function() {
 
 
     this.componateAllPointsData = function() {
-        this.pointsData = [
-            { label: "Finded function", data: this.resultPoints, lines: { show: true, fill: false } },
-            { label: "Source points", data: this.sourcePoints, points: { show: true, radius: 2, lineWidth: 5, fill: false } }
-        ];
+        this.pointsData = [];
+        this.pointsData.push({ label: "Source points", data: this.sourcePoints, points: { show: true, radius: 2, lineWidth: 5, fill: false } });
+
+
+        if (this.resultCrossValidationPoints.length > 0) {
+            this.pointsData.push( { label: "Finded function with cross validation ", data: this.resultCrossValidationPoints, lines: { show: true, fill: false } });
+        }
+        if (this.resultPoints.length > 0) {
+            this.pointsData.push( { label: "Finded function", data: this.resultPoints, lines: { show: true, fill: false } });
+        }
         if (this.select('showSourceFunctionCheckbox')[0].checked) {
             this.generateSourceFunctionGraphic();
             this.pointsData.push( { label: "Source function", data: this.sourceGraphicPoints, lines: { show: true, fill: false } } )
         }
-
     };
     this.startOLS = function() {
+        this.resultCrossValidationPoints = [];
+        this.resultPoints = [];
         this.generateSourcePoints();
         var event = 'start-algorithm-' + this.olsAlgorithmFunction;
         this.trigger(event);
+        if (this.select('completeStandartAndCrossCheckbox')[0].checked) {
+            var event = 'start-algorithm-standart';
+            this.trigger(event);
+        }
+
         this.componateAllPointsData();
         this.trigger('redraw-graph');
     };
@@ -85,8 +98,7 @@ window.OLSDataMixin = function() {
        this.pointsCount = parseFloat(this.select('pointsCounterInput').val());
        this.degreeApproximatingFunction = parseInt(this.select('degreeApproximatingFunctionSelector').val());
        this.crossValidationGroups = parseFloat(this.select('crossValidationGroupsSelector').val());
-
-        var func = this.select('functionSelector').val();
+       var func = this.select('functionSelector').val();
        switch (func) {
            case 'cos':
            {

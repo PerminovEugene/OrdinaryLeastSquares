@@ -46,7 +46,7 @@ window.OrdinaryLeastSquaresComponent = flight.component(
     };
 
     this.zoomTick = 0.5;
-    this.zoomMax = 30;
+    this.zoomMax = 100;
     this.zoomMin = 1;
     this.addZoom = function () {
         if (this.params["xmax"] < this.zoomMax) {

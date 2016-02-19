@@ -6,9 +6,10 @@ window.OLSAlgorithmMixin = function() {
 
     this.result = [];
     this.resultPoints = [];
+    this.resultCrossValidationPoints = [];
 
     this.generateResultFunction = function () {
-        this.resultPoints = [];
+        var resultPoints = [];
         var i = 0;
         var pointX = this.getMinX();
         var max = this.getMaxX();
@@ -20,9 +21,10 @@ window.OLSAlgorithmMixin = function() {
                 pointY += this.result[j] *  Math.pow(pointX, j)
             }
 
-            this.resultPoints.push([pointX, pointY]);
+            resultPoints.push([pointX, pointY]);
             pointX += step;
         }
+        return resultPoints;
     };
 
     this.gaussSystemSolution = function (A) {
@@ -91,7 +93,7 @@ window.OLSAlgorithmMixin = function() {
     this.startAlgorithm = function () {
         var A = this.generateMatrA(this.sourcePoints);
         this.result = this.gaussSystemSolution(A);
-        this.generateResultFunction();
+        this.resultPoints = this.generateResultFunction();
     };
 
     this.startWithCrossValidation = function () {
@@ -99,33 +101,43 @@ window.OLSAlgorithmMixin = function() {
         var controlPoints = [];
         var controlCoefficients = [];
         var pointsInGroup = this.sourcePoints.length / this.crossValidationGroups;
-
         var groupNumber = 0;
+        controlCoefficients = [];
         while (groupNumber < this.crossValidationGroups) {
             trainingPoints = [];
             controlPoints = [];
-            controlCoefficients = [];
+//            console.log(groupNumber + " итерация кросс валидации");
+
             var point = 0;
             while (point < this.sourcePoints.length) {
-                if ((point > groupNumber * pointsInGroup) && (point < (groupNumber + 1) * pointsInGroup)) {
+                if ((point > (groupNumber * pointsInGroup)-1) && (point < (groupNumber + 1) * pointsInGroup)) {
+//                    console.log(point + " точка сейчас в контрольной группе");
                     controlPoints.push(this.sourcePoints[point]);
                 } else {
+//                    console.log(point + " точка сейчас в тренировочной группе");
                     trainingPoints.push(this.sourcePoints[point]);
                 }
-
                 point++
             }
             var A = this.generateMatrA(trainingPoints);
-            controlCoefficients.push(this.gaussSystemSolution(A)); //TODO THERE NEED ADD MANY CODe
-            this.generateResultFunction();
-
+            controlCoefficients.push(this.gaussSystemSolution(A));
             groupNumber++
         }
-
-
-        var A = this.generateMatrA(this.sourcePoints);
-        this.result = this.gaussSystemSolution(A);
-        this.gaussSystemSolution(A);
+        var t = 0, l= 0;
+        var balancedCoefficient = [];
+        while (l < this.degreeApproximatingFunction) {
+            balancedCoefficient.push(0);
+            t = 0;
+            while (t < controlCoefficients.length) {
+//                debugger
+                balancedCoefficient[l] += controlCoefficients[t][l];
+                t++;
+            }
+            balancedCoefficient[l] = balancedCoefficient[l] / controlCoefficients.length;
+            l++;
+        }
+        this.result = balancedCoefficient;
+        this.resultCrossValidationPoints = this.generateResultFunction();
     };
 
     return this.after('initialize', function() {
