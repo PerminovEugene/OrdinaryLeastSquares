@@ -88,10 +88,10 @@ window.OLSDataMixin = function() {
         this.generateSourcePoints();
         var event = 'start-algorithm-' + this.olsAlgorithmFunction;
         this.trigger(event);
-        if (this.select('completeStandartAndCrossCheckbox')[0].checked) {
-            var event = 'start-algorithm-standart';
-            this.trigger(event);
-        }
+//        if (this.select('completeStandartAndCrossCheckbox')[0].checked) {
+//            var event = 'start-algorithm-standart';
+//            this.trigger(event);
+//        }
 
         this.componateAllPointsData();
         this.trigger('redraw-graph');

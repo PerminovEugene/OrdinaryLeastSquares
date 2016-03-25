@@ -129,9 +129,10 @@ window.OLSAlgorithmMixin = function() {
             var pointsInGroup = this.sourcePoints.length / this.crossValidationGroups;
             var groupNumber = 0;
             crossValidationOneIterationPolinomCoefficients = [];
+            var errorOnCurrentDegree = 0;
 
             while (groupNumber < this.crossValidationGroups) {
-                var errorOnCurrentDegree = 0;
+
                 trainingPoints = [];
                 validationPoints = [];
 //              console.log(groupNumber + " итерация кросс валидации");
@@ -164,7 +165,7 @@ window.OLSAlgorithmMixin = function() {
                 }
                 error = error / pointsInGroup;
                 errorOnCurrentDegree += error;
-                console.log(error + " ошибка на " + groupNumber + " выборке, при степени " + this.degreeApproximatingFunction );
+                console.log(error + " ошибка на " + groupNumber + " выборке, при степени " + this.degreeApproximatingFunction + ". Ошибка степени " + errorOnCurrentDegree );
 
                 if (errorOnCurrentDegree < minimalError) {
                     minimalError = errorOnCurrentDegree;

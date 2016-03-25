@@ -5,10 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Ordinary Least Squares</title>
+    <title>Neuron web</title>
 
     <!-- Bootstrap -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/bootstrap.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -18,14 +18,133 @@
 </head>
 <header class="col-sm-12">
     <div class="container">
-        <h1 class="blue">Ordinary least squares</h1>
+        <h1 class="blue"> Approximation with neuron web </h1>
     </div>
 </header>
 <body>
 
+<p><noscript><strong style="color: red;">
+    Для отображения данных необходимо включить JavaScript!
+</strong></noscript></p>
 
-<script src="../js/jquery.js"></script>
+<div class="col-sm-9">
+    <div id="placeholder" style="width:800px;height:800px;"></div>
+</div>
+<div class="col-sm-3">
+
+    <!--<div class="col-sm-12" style="margin-bottom: 15px">-->
+        <!--<button class="js-generate-nw"> Generate neuron web </button>-->
+    <!--</div>-->
+
+    <div class="col-sm-12" style="margin-bottom: 15px">
+        <button class="js-start-nw"> Start </button>
+    </div>
+
+    <div class="col-sm-12" style="margin-bottom: 15px">
+        <button class="js-teach-nw"> Teach </button>
+    </div>
+
+    <div class="col-sm-11" style="margin-bottom: 15px">
+        <label for="point-count">Points count</label>
+        <input class="col-sm-12" id="point-count" value="10">
+    </div>
+
+    <div class="col-sm-11" style="margin-bottom: 15px">
+        <label for="layers-counter"> Layers </label>
+        <input class="col-sm-12" id="layers-counter" value="10">
+    </div>
+
+    <div class="col-sm-11" style="margin-bottom: 15px">
+        <label for="neurons-at-layer-counter"> Neurons at layer </label>
+        <input class="col-sm-12" id="neurons-at-layer-counter" value="10">
+    </div>
+
+    <div class="col-sm-12" style="margin-bottom: 15px">
+        <label for="select-function">Select function</label>
+        <select id="select-function">
+            <option class="function-option" value="cos"> y = cos(2*Pi*X) </option>
+            <option class="function-option" value="polynomial"> y = 5*x^3+x^2+5 </option>
+            <option class="function-option" value="sin"> y = x*sin(2*Pi*X) </option>
+        </select>
+    </div>
+
+    <div class="col-sm-11 " style="margin-bottom: 15px">
+        <input type="checkbox" name="show-source-function" value="show" id="show-source-function"> Show source function <Br>
+    </div>
+
+    <!--<div class="col-sm-11" style="margin-bottom: 15px">-->
+        <!--<label for="degree_approximating_function">Degree approximating function</label>-->
+        <!--<input class="col-sm-12" id="degree_approximating_function" value="3">-->
+    <!--</div>-->
+    <!--<div class="col-sm-11 js-maximum-degree hidden" style="margin-bottom: 15px">-->
+        <!--<label for="degree_approximating_function">Maximum degree approximating function</label>-->
+        <!--<input class="col-sm-12" id="maximum_degree_approximating_function" value="5">-->
+    <!--</div>-->
+<!---->
+<!---->
+    <!--<div class="col-sm-12" style="margin-bottom: 15px">-->
+        <!--<label for="select-function">Select function</label>-->
+        <!--<select id="select-function">-->
+            <!--<option class="function-option" value="cos"> y = cos(2*Pi*X) </option>-->
+            <!--<option class="function-option" value="polynomial"> y = 5*x^3+x^2+5 </option>-->
+            <!--<option class="function-option" value="sin"> y = x*sin(2*Pi*X) </option>-->
+        <!--</select>-->
+    <!--</div>-->
+<!---->
+    <!--<div class="col-sm-11 " style="margin-bottom: 15px">-->
+        <!--<input type="checkbox" name="show-source-function" value="show" id="show-source-function"> Show source function <Br>-->
+    <!--</div>-->
+<!---->
+    <!--<div class="col-sm-12 cross-validation-part" style="margin-bottom: 15px">-->
+        <!--<label for="select-function">Algorithm features</label>-->
+        <!--<select id="select-algorithm-feature">-->
+            <!--<option class="algorithm-feature-option" value="standart"> Standart </option>-->
+            <!--<option class="algorithm-feature-option" value="cross-validation"> With cross-validation </option>-->
+        <!--</select>-->
+    <!--</div>-->
+
+    <!--<div class="col-sm-11 js-cross-validation-part hidden" style="margin-bottom: 15px">-->
+        <!--<label for="degree_approximating_function">Number of groups for cross validation</label>-->
+        <!--<input class="col-sm-12" id="cross-validation-groups" value="3">-->
+<!---->
+        <!--<input type="checkbox" name="complete" value="show" id="show-standart-function-resul"> Show result with standart algorithm for complete <Br>-->
+    <!--</div>-->
+<!---->
+
+    <div class="js-web">
+
+    <div class="col-sm-12">
+    </div>
+    <div class="col-sm-12">
+    </div>
+</div>
+
+<script src="../js/Flot/jquery.js"></script>
+<script src="../js/Flot/excanvas.min.js"></script>
+<script src="../js/Flot/jquery.flot.js"></script>
+<script src="../js/Flot/jquery.colorhelpers.js"></script>
+<script src="../js/Flot/jquery.flot.canvas.js"></script>
+<script src="../js/Flot/jquery.flot.categories.js"></script>
+<script src="../js/Flot/jquery.flot.crosshair.js"></script>
+<script src="../js/Flot/jquery.flot.errorbars.js"></script>
+<script src="../js/Flot/jquery.flot.fillbetween.js"></script>
+<script src="../js/Flot/jquery.flot.image.js"></script>
+
+<script src="../js/Flot/jquery.flot.navigate.js"></script>
+<script src="../js/Flot/jquery.flot.pie.js"></script>
+<script src="../js/Flot/jquery.flot.resize.js"></script>
+<script src="../js/Flot/jquery.flot.selection.js"></script>
+<script src="../js/Flot/jquery.flot.stack.js"></script>
+<script src="../js/Flot/jquery.flot.symbol.js"></script>
+<script src="../js/Flot/jquery.flot.threshold.js"></script>
+<script src="../js/Flot/jquery.flot.time.js"></script>
+
+
 <script type="text/javascript" charset="utf-8" src="../js/Flight/twitter_flight.js"></script>
-<script src="../js/OrdinaryLeastSquares.js"></script>
+<script src="../js/neuron.js"></script>
+<script src="../js/draw-machine-learning-mixin.js"></script>
+<script src="../js/NWManager.js"></script>
+<script src="../js/NWData.js"></script>
+<script src="../js/NeuronWeb.js"></script>
 </body>
 </html>
