@@ -12,11 +12,14 @@ window.OLSDataMixin = function() {
         crossValidationBlock: '.js-cross-validation-part',
         showSourceFunctionCheckbox: '#show-source-function',
         crossValidationGroupsSelector: '#cross-validation-groups',
-        completeStandartAndCrossCheckbox: '#show-standart-function-resul'
+        completeStandartAndCrossCheckbox: '#show-standart-function-resul',
+
+        maximumDegreeOnCrossValidationSelector: '#maximum_degree_approximating_function'
     });
 
     this.pointsCount = 10;
     this.degreeApproximatingFunction = 1;
+    this.maximumDegreeApproximatingFunction = 2;
     this.olsAlgorithmFunction = "standart";
     this.crossValidationGroups = 2;
 //    this.MAXIMUM_FUNCTION_DEGREE = 9;
@@ -97,6 +100,8 @@ window.OLSDataMixin = function() {
     this.getDataAboutOLS = function() {
        this.pointsCount = parseFloat(this.select('pointsCounterInput').val());
        this.degreeApproximatingFunction = parseInt(this.select('degreeApproximatingFunctionSelector').val());
+       this.maximumDegreeApproximatingFunction = parseInt(this.select('maximumDegreeOnCrossValidationSelector').val());
+
        this.crossValidationGroups = parseFloat(this.select('crossValidationGroupsSelector').val());
        var func = this.select('functionSelector').val();
        switch (func) {
@@ -127,9 +132,11 @@ window.OLSDataMixin = function() {
         this.olsAlgorithmFunction = this.select('algorithmFeatureSelector').val();
         if (this.olsAlgorithmFunction == "cross-validation") {
             this.select('crossValidationBlock').removeClass("hidden");
+            $('.js-maximum-degree').removeClass('hidden')
         }
         else {
             this.select('crossValidationBlock').addClass("hidden");
+            $('.js-maximum-degree').addClass('hidden')
         }
     };
 

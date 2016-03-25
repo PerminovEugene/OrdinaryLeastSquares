@@ -96,48 +96,103 @@ window.OLSAlgorithmMixin = function() {
         this.resultPoints = this.generateResultFunction();
     };
 
-    this.startWithCrossValidation = function () {
-        var trainingPoints = [];
-        var controlPoints = [];
-        var controlCoefficients = [];
-        var pointsInGroup = this.sourcePoints.length / this.crossValidationGroups;
-        var groupNumber = 0;
-        controlCoefficients = [];
-        while (groupNumber < this.crossValidationGroups) {
-            trainingPoints = [];
-            controlPoints = [];
-//            console.log(groupNumber + " итерация кросс валидации");
 
-            var point = 0;
-            while (point < this.sourcePoints.length) {
-                if ((point > (groupNumber * pointsInGroup)-1) && (point < (groupNumber + 1) * pointsInGroup)) {
+    this.processFunctionOnCurrentPointsAndCoefficients = function (points, coefficients) {
+        var resultPoints = [];
+        var i = 0;
+        var pointX = 0;
+        while (i < points.length) {
+            var pointY = 0;
+            pointX = points[i][0];
+            var j;
+            for (j = 0; j < coefficients.length; j++) {
+                pointY += coefficients[j] *  Math.pow(pointX, j)
+            }
+
+            resultPoints.push(pointY);
+            i++
+        }
+        return resultPoints;
+    };
+
+
+    this.startWithCrossValidation = function () {
+        var optimalDegree = this.degreeApproximatingFunction;
+        var minimalDegree = this.degreeApproximatingFunction;
+        if (minimalDegree > this.degreeApproximatingFunction)
+            alert("Maximum degree must be more then degree.");
+        var minimalError = 9999999999999;
+        while (this.degreeApproximatingFunction < this.maximumDegreeApproximatingFunction) {
+            var trainingPoints = [];
+            var validationPoints = [];
+            var crossValidationOneIterationPolinomCoefficients = [];
+            var pointsInGroup = this.sourcePoints.length / this.crossValidationGroups;
+            var groupNumber = 0;
+            crossValidationOneIterationPolinomCoefficients = [];
+
+            while (groupNumber < this.crossValidationGroups) {
+                var errorOnCurrentDegree = 0;
+                trainingPoints = [];
+                validationPoints = [];
+//              console.log(groupNumber + " итерация кросс валидации");
+
+                var point = 0;
+                while (point < this.sourcePoints.length) {
+                    if ((point >= (groupNumber * pointsInGroup)) && (point < (groupNumber + 1) * pointsInGroup)) {
 //                    console.log(point + " точка сейчас в контрольной группе");
-                    controlPoints.push(this.sourcePoints[point]);
-                } else {
+                        validationPoints.push(this.sourcePoints[point]);
+                    } else {
 //                    console.log(point + " точка сейчас в тренировочной группе");
-                    trainingPoints.push(this.sourcePoints[point]);
+                        trainingPoints.push(this.sourcePoints[point]);
+                    }
+                    point++
                 }
-                point++
+                var A = this.generateMatrA(trainingPoints);
+                var polinomCoefficients = this.gaussSystemSolution(A);
+                crossValidationOneIterationPolinomCoefficients.push(polinomCoefficients);
+                var controlPoints = this.processFunctionOnCurrentPointsAndCoefficients(validationPoints, polinomCoefficients);
+                // TODO впилить показ промежуточного результата на графике
+                // считаем ошибку
+
+                var i = 0;
+                var error = 0;
+                while (i < pointsInGroup) {
+                    var indexInAllPoints = groupNumber * pointsInGroup + i;
+                    error += Math.abs(this.sourcePoints[indexInAllPoints][1] - controlPoints[i]);
+
+                    i++;
+                }
+                error = error / pointsInGroup;
+                errorOnCurrentDegree += error;
+                console.log(error + " ошибка на " + groupNumber + " выборке, при степени " + this.degreeApproximatingFunction );
+
+                if (errorOnCurrentDegree < minimalError) {
+                    minimalError = errorOnCurrentDegree;
+                    optimalDegree = this.degreeApproximatingFunction;
+                }
+
+                groupNumber++;
             }
-            var A = this.generateMatrA(trainingPoints);
-            controlCoefficients.push(this.gaussSystemSolution(A));
-            groupNumber++
-        }
-        var t = 0, l= 0;
-        var balancedCoefficient = [];
-        while (l < this.degreeApproximatingFunction) {
-            balancedCoefficient.push(0);
-            t = 0;
-            while (t < controlCoefficients.length) {
-//                debugger
-                balancedCoefficient[l] += controlCoefficients[t][l];
-                t++;
-            }
-            balancedCoefficient[l] = balancedCoefficient[l] / controlCoefficients.length;
-            l++;
-        }
-        this.result = balancedCoefficient;
-        this.resultCrossValidationPoints = this.generateResultFunction();
+
+//            var t = 0, l = 0;
+//            var balancedCoefficient = [];
+//            while (l < this.degreeApproximatingFunction) { // берем среднее по коэфициентам из контрольной группы
+//                balancedCoefficient.push(0);
+//                t = 0;
+//                while (t < crossValidationOneIterationPolinomCoefficients.length) {
+//                    balancedCoefficient[l] += crossValidationOneIterationPolinomCoefficients[t][l];
+//                    t++;
+//                }
+//                balancedCoefficient[l] = balancedCoefficient[l] / crossValidationOneIterationPolinomCoefficients.length;
+//                l++;
+//            }
+//            this.result = balancedCoefficient;
+//            this.resultCrossValidationPoints = this.generateResultFunction();
+            this.degreeApproximatingFunction++;
+        };
+        console.log('Выбраная степень полинома: ' + optimalDegree);
+        this.degreeApproximatingFunction = optimalDegree;
+        this.trigger('start-algorithm-standart')
     };
 
     return this.after('initialize', function() {
