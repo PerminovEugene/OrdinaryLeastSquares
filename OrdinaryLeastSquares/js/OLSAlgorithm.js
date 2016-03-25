@@ -195,6 +195,26 @@ window.OLSAlgorithmMixin = function() {
         this.trigger('start-algorithm-standart')
     };
 
+    // testing functions
+
+    this.logArray = function (array) {
+      var i = 0;
+      while (i < array.length) {
+          console.log(array[i])
+          i++
+      }
+    };
+
+    this.logMatr = function (matr) {
+      var j = 0;
+      while (j < matr.length) {
+          this.logArray(matr[j]);
+          j++;
+      }
+    };
+
+    // end of testing functions
+
     return this.after('initialize', function() {
         this.on('start-algorithm-standart', function() {
             this.startAlgorithm();

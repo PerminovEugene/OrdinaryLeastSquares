@@ -36,8 +36,8 @@
       <file leaf-file-name="OLSAlgorithm.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/OLSAlgorithm.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.60708785" vertical-offset="2486" max-vertical-offset="3150">
-              <caret line="194" column="46" selection-start-line="194" selection-start-column="46" selection-end-line="194" selection-end-column="46" />
+            <state vertical-scroll-proportion="0.67488444" vertical-offset="1902" max-vertical-offset="3450">
+              <caret line="158" column="0" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -46,8 +46,8 @@
       <file leaf-file-name="main.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/main.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="8.416667" vertical-offset="892" max-vertical-offset="1875">
-              <caret line="46" column="30" selection-start-line="46" selection-start-column="30" selection-end-line="46" selection-end-column="47" />
+            <state vertical-scroll-proportion="-9.083333" vertical-offset="892" max-vertical-offset="1875">
+              <caret line="74" column="41" selection-start-line="46" selection-start-column="30" selection-end-line="46" selection-end-column="47" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -419,12 +419,12 @@
       <workItem from="1455777175777" duration="13363000" />
       <workItem from="1455861677129" duration="8164000" />
       <workItem from="1458835696702" duration="937000" />
-      <workItem from="1458873273087" duration="8306000" />
+      <workItem from="1458873273087" duration="10206000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="57049000" />
+    <option name="totallyTimeSpent" value="58949000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1301" height="744" extended-state="6" />
@@ -779,8 +779,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/main.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="8.416667" vertical-offset="892" max-vertical-offset="1875">
-          <caret line="46" column="30" selection-start-line="46" selection-start-column="30" selection-end-line="46" selection-end-column="47" />
+        <state vertical-scroll-proportion="-9.083333" vertical-offset="892" max-vertical-offset="1875">
+          <caret line="74" column="41" selection-start-line="46" selection-start-column="30" selection-end-line="46" selection-end-column="47" />
           <folding>
             <element signature="n#style#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -802,8 +802,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/OLSAlgorithm.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.60708785" vertical-offset="2486" max-vertical-offset="3150">
-          <caret line="194" column="46" selection-start-line="194" selection-start-column="46" selection-end-line="194" selection-end-column="46" />
+        <state vertical-scroll-proportion="0.67488444" vertical-offset="1902" max-vertical-offset="3450">
+          <caret line="158" column="0" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
           <folding />
         </state>
       </provider>
