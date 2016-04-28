@@ -29,7 +29,8 @@ window.OLSDataMixin = function() {
     };
 
     this.sinFinder = function (x) {
-        return x * Math.sin(2 * Math.PI * x);
+        return x * Math.sin(x);
+//        return x * Math.sin(2 * Math.PI * x);
     };
 
     this.polyFinder = function (x) {
@@ -46,7 +47,7 @@ window.OLSDataMixin = function() {
         var max = this.getMaxX();
         while (i < this.pointsCount) {
             var pointX = Math.random() * (max - min) + min;
-            var pointY = this.currentFunction(pointX) + ((Math.random() * 0.1) - 0.05);
+            var pointY = this.currentFunction(pointX) + ((Math.random() * 1) - 0.5);
             this.sourcePoints.push([pointX, pointY]);
             i++;
         }

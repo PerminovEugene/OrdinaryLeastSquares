@@ -106,6 +106,7 @@ window.NWDataMixin = function() {
 //        this.crossValidationGroups = parseFloat(this.select('crossValidationGroupsSelector').val());
         this.layersCount= parseFloat(this.select('layersCounterSelector').val());
         this.neuronsAtLayerCount = parseFloat(this.select('neuronsAtLayerCounter').val());
+        neuronsOnLayer = this.neuronsAtLayerCount;
         var func = this.select('functionSelector').val();
         switch (func) {
             case 'cos':
@@ -132,7 +133,7 @@ window.NWDataMixin = function() {
     };
 
 //    this.algorithmFeatrue = function () {
-//        this.olsAlgorithmFunction = this.select('algorithmFeatureSelector').val();
+//        this.olsAlgorithmFunction = this.select('algorithmFeatureSglobalWeights[i][this.id]elector').val();
 //        if (this.olsAlgorithmFunction == "cross-validation") {
 //            this.select('crossValidationBlock').removeClass("hidden");
 //            $('.js-maximum-degree').removeClass('hidden')
