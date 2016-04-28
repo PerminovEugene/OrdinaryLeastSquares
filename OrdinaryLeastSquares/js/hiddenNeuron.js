@@ -37,15 +37,11 @@ window.hiddenNeuron = flight.component(
 
         this.teachSelf = function (data) {
             var y = data['ySignal'];
-
-            if (this.previosLayerValues[this.teachIteration] === undefined) {
-                this.previosLayerValues[this.teachIteration] = {}
-            }
-            this.previosLayerValues[this.teachIteration][data["from"]] = y;
+            this.previosLayerValues[data["from"]] = y;
 
             this.summ = y * globalWeights1[data["from"]][this.id];
             this.signalsCounter++;
-            console.log('hidden signals '+ this.signalsCounter + ' in ' + this.id)
+//            console.log('hidden signals '+ this.signalsCounter + ' in ' + this.id)
             if (this.signalsCounter == neuronsOnLayer) {
                 this.summ += this.weight;
                 y = this.useActivateFunction(this.summ);
@@ -54,10 +50,8 @@ window.hiddenNeuron = flight.component(
                 newData['xSourceCoordinate'] = data['xSourceCoordinate'];
                 newData['ySourceCoordinate'] = data['ySourceCoordinate'];
                 newData['from'] = this.id;
-                console.log('send from '+  this.id);
                 this.signalsCounter = 0;
                 $(document).trigger(this.eventForSendTeach, newData);
-                this.teachIteration += 1;
             }
         };
 
@@ -73,12 +67,10 @@ window.hiddenNeuron = flight.component(
                 this.errorsCounter = 0;
 
                 for (var i = 0; i < neuronsOnLayer; i++ ) {
-                    this.deltaWeightJK[i] = speedOfLearning * error * this.previosLayerValues[data["teachIteration"]][i];
+                    this.deltaWeightJK[i] = speedOfLearning * error * this.previosLayerValues[i];
                     globalWeights1[data["from"]][this.id] += this.deltaWeightJK[i];
                 }
                 this.weight = speedOfLearning * error;
-                console.log('send change-weights');
-
                 this.summ = 0;
                 this.errorsCounter = 0;
                 this.errorsSumm = 0;

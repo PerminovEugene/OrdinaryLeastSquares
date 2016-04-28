@@ -61,12 +61,12 @@ window.NWManagerMixin = function() {
                     summ += Math.pow( (this.sourcePoints[i][1] - this.resultsPoints[i]), 2)
                 }
                 var err = Math.sqrt(summ / (this.resultsPoints.length - 1));
-                console.log(e                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       rr);
-                if (err < 0.03) {
+                console.log(err)
+                if (err < 0.1) {
                     debugger
                 } else {
                     this.pointsCounter = 0;
-                    this.resultsPoints = []
+                    this.resultsPoints = [];
                     this.teach();
                 }
 

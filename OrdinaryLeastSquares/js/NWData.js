@@ -94,8 +94,8 @@ window.NWDataMixin = function() {
 //            this.trigger(event);
 //        }
 
-        this.componateAllPointsData();
-        this.trigger('redraw-graph');
+//        this.componateAllPointsData();
+//        this.trigger('redraw-graph');
     };
 
     this.getDataAboutNW = function() {

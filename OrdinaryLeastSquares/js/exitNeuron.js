@@ -43,20 +43,16 @@ window.exitNeuron = flight.component(
         this.result = 0;
         this.teachSelf = function (data) {
             var y = data['ySignal'];
-            if (this.previosLayerValues[this.teachIteration] === undefined) {
-                this.previosLayerValues[this.teachIteration] = {}
-            }
-            this.previosLayerValues[this.teachIteration][data["from"]] = y;
+            this.previosLayerValues[data["from"]] = y;
 
             this.summ = y * globalWeights2[data["from"]][this.id];
             this.signalsCounter += 1;
-            console.log('get from '+ data['from'] + ' now signals ' + this.signalsCounter + ' neurons ' + neuronsOnLayer);
+//            console.log('get from '+ data['from'] + ' now signals ' + this.signalsCounter + ' neurons ' + neuronsOnLayer);
             if (this.signalsCounter === neuronsOnLayer) {
                 this.summ += this.weight;
                 y = this.useActivateFunction(this.summ);
                 var newData = {};
                 this.result = y;
-                console.log(this.result);
                 newData['ySignal'] = y;
                 newData['xSourceCoordinate'] = data['xSourceCoordinate'];
                 newData['ySourceCoordinate'] = data['ySourceCoordinate'];
@@ -67,7 +63,7 @@ window.exitNeuron = flight.component(
 
                 var sigmaError = (data['ySourceCoordinate'] - y) * this.useActivateFunctionForBackForward(this.summ);
                 for (var i = 0; i < neuronsOnLayer; i++ ) {
-                    this.deltaWeightJK[i] = speedOfLearning * sigmaError * this.previosLayerValues[this.teachIteration][i];
+                    this.deltaWeightJK[i] = speedOfLearning * sigmaError * this.previosLayerValues[i];
 //                    globalWeights2[data["from"]][this.id] += deltaWeightJK;
                 }
                 this.weight = speedOfLearning * sigmaError;
@@ -79,7 +75,6 @@ window.exitNeuron = flight.component(
                 backForwardData['teachIteration'] = this.teachIteration;
 
 
-                this.teachIteration += 1;
                 this.signalsCounter = 0;
                 this.summ = 0;
                 $(document).trigger(this.eventForBackForward, backForwardData)
