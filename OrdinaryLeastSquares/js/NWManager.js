@@ -15,7 +15,11 @@ window.NWManagerMixin = function() {
         for(var i=0; i< this.layersCount; i++) {
             var layer = $('<div class="js-layer" data-id="' + i + '">');
             webSelector.append(layer);
-            for(var j=0; j < this.neuronsAtLayerCount; j++) {
+            var k = this.neuronsAtLayerCount;
+            if (i === this.layersCount - 1) {
+                k = 1
+            }
+            for(var j=0; j < k; j++) {
                 var classForCurrentNeuron = "js-neuron-" + i + "-"+ j ;
                 var neuronSelector = $('<div class="js-neuron '+ classForCurrentNeuron +'" data-id="' + j + '" data-layer="' + i + '">');
                 layer.append(neuronSelector);
@@ -37,13 +41,48 @@ window.NWManagerMixin = function() {
 
     };
 
+    this.sendNextPointForTeach = function(point) {
+        var data = {};
+        data["x"] = point[0];
+        data["y"] = point[1];
+        $(document).trigger('start-teach', data);
+    };
+
+    this.pointsCounter = 0;
+    this.finishEventsFromNeurons = 0;
+    this.resultsPoints = [];
     this.teach = function () {
         var data = {};
-        for (var i=0; i < this.sourcePoints.length; i++) {
-            data["x"] = this.sourcePoints[i][0];
-            data["y"] = this.sourcePoints[i][1];
-            $(document).trigger('start-teach', data);
-        }
+
+        this.on(document, 'finish-teach-iteration-on-point', function(e, data) {
+            if (this.pointsCounter === this.sourcePoints.length - 1) {
+                var summ = 0;
+                for (var i = 0; i < this.resultsPoints.length; i ++) {
+                    summ += Math.pow( (this.sourcePoints[i][1] - this.resultsPoints[i]), 2)
+                }
+                var err = Math.sqrt(summ / (this.resultsPoints.length - 1));
+                console.log(e                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       rr);
+                if (err < 0.03) {
+                    debugger
+                } else {
+                    this.pointsCounter = 0;
+                    this.resultsPoints = []
+                    this.teach();
+                }
+
+
+            } else {
+//                if (this.finishEventsFromNeurons === this.neuronsAtLayerCount) {
+                this.resultsPoints.push(data['result']);
+                this.pointsCounter += 1;
+                this.sendNextPointForTeach(this.sourcePoints[this.pointsCounter]);
+//                this.finishEventsFromNeurons = 0;
+//                } else {
+//                    this.finishEventsFromNeurons += 1;
+//                }
+            }
+        });
+        this.sendNextPointForTeach(this.sourcePoints[this.pointsCounter]);
 
 
 //        while (nwWorked == false) {

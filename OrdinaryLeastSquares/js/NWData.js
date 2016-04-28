@@ -103,7 +103,7 @@ window.NWDataMixin = function() {
 //        this.degreeApproximatingFunction = parseInt(this.select('degreeApproximatingFunctionSelector').val());
 //        this.maximumDegreeApproximatingFunction = parseInt(this.select('maximumDegreeOnCrossValidationSelector').val());
 
-//        this.crossValidationGroups = parseFloat(this.select('crossValidationGroupsSelector').val());
+//        this.crossValidationGroups = parseFloat(thi{s.select('crossValidationGroupsSelector').val());
         this.layersCount= parseFloat(this.select('layersCounterSelector').val());
         this.neuronsAtLayerCount = parseFloat(this.select('neuronsAtLayerCounter').val());
         neuronsOnLayer = this.neuronsAtLayerCount;

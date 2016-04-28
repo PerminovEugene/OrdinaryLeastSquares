@@ -45,8 +45,8 @@ window.hiddenNeuron = flight.component(
 
             this.summ = y * globalWeights1[data["from"]][this.id];
             this.signalsCounter++;
+            console.log('hidden signals '+ this.signalsCounter + ' in ' + this.id)
             if (this.signalsCounter == neuronsOnLayer) {
-
                 this.summ += this.weight;
                 y = this.useActivateFunction(this.summ);
                 var newData = {};
@@ -54,8 +54,9 @@ window.hiddenNeuron = flight.component(
                 newData['xSourceCoordinate'] = data['xSourceCoordinate'];
                 newData['ySourceCoordinate'] = data['ySourceCoordinate'];
                 newData['from'] = this.id;
-                $(document).trigger(this.eventForSendTeach, newData);
+                console.log('send from '+  this.id);
                 this.signalsCounter = 0;
+                $(document).trigger(this.eventForSendTeach, newData);
                 this.teachIteration += 1;
             }
         };
@@ -66,7 +67,7 @@ window.hiddenNeuron = flight.component(
         this.startBackForwardTeach = function (data) {
             this.errorsCounter += 1;
             this.errorsSumm += data['sigmaError'] * globalWeights1[this.id][data['from']];
-            if (this.errorsCounter == neuronsOnLayer) {
+            if (this.errorsCounter == 1) {
                 var error = this.errorsSumm * this.useActivateFunctionForBackForward(this.summ);
 
                 this.errorsCounter = 0;
@@ -76,8 +77,12 @@ window.hiddenNeuron = flight.component(
                     globalWeights1[data["from"]][this.id] += this.deltaWeightJK[i];
                 }
                 this.weight = speedOfLearning * error;
-                $(document).trigger('change-weights-on-exit-layer')
+                console.log('send change-weights');
 
+                this.summ = 0;
+                this.errorsCounter = 0;
+                this.errorsSumm = 0;
+                $(document).trigger('change-weights-on-exit-layer', {'from': this.id});
             }
         };
 
@@ -97,7 +102,7 @@ window.hiddenNeuron = flight.component(
             this.eventForSendTeach = 'to-' + nextLayer + "-teach";
             var eventForTeachSelf = 'teach-' + this.layer;
 
-            var eventFromBackForward = 'to-' + this.layer + '-back-forward'
+            var eventFromBackForward = 'to-' + this.layer + '-back-forward';
 
             this.on(document, eventFromBackForward, function(e, data) {
                 this.startBackForwardTeach(data);

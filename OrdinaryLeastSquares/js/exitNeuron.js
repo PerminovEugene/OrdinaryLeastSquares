@@ -40,6 +40,7 @@ window.exitNeuron = flight.component(
         this.teachIteration = 0;
         this.previosLayerValues = {};
         this.deltaWeightJK = {};
+        this.result = 0;
         this.teachSelf = function (data) {
             var y = data['ySignal'];
             if (this.previosLayerValues[this.teachIteration] === undefined) {
@@ -48,12 +49,14 @@ window.exitNeuron = flight.component(
             this.previosLayerValues[this.teachIteration][data["from"]] = y;
 
             this.summ = y * globalWeights2[data["from"]][this.id];
-            this.signalsCounter++;
-            if (this.signalsCounter == neuronsOnLayer) {
+            this.signalsCounter += 1;
+            console.log('get from '+ data['from'] + ' now signals ' + this.signalsCounter + ' neurons ' + neuronsOnLayer);
+            if (this.signalsCounter === neuronsOnLayer) {
                 this.summ += this.weight;
                 y = this.useActivateFunction(this.summ);
-
                 var newData = {};
+                this.result = y;
+                console.log(this.result);
                 newData['ySignal'] = y;
                 newData['xSourceCoordinate'] = data['xSourceCoordinate'];
                 newData['ySourceCoordinate'] = data['ySourceCoordinate'];
@@ -75,15 +78,21 @@ window.exitNeuron = flight.component(
                 backForwardData['from'] = this.id;
                 backForwardData['teachIteration'] = this.teachIteration;
 
-                $(document).trigger(this.eventForBackForward, backForwardData)
+
                 this.teachIteration += 1;
+                this.signalsCounter = 0;
+                this.summ = 0;
+                $(document).trigger(this.eventForBackForward, backForwardData)
             }
         };
 
-        this.changeWeightsOnFinishTeachIteration = function() {
-            for (var i = 0; i < neuronsOnLayer; i++ ) {
-                console.log("was")
-                globalWeights2[i][this.id] += this.deltaWeightJK[i];
+        this.responceOnBackForwardCounter = 0;
+        this.changeWeightsOnFinishTeachIteration = function(data) {
+            globalWeights2[data['from']][this.id] += this.deltaWeightJK[data['from']];
+            this.responceOnBackForwardCounter += 1;
+            if (this.responceOnBackForwardCounter === neuronsOnLayer) {
+                this.responceOnBackForwardCounter = 0;
+                $(document).trigger('finish-teach-iteration-on-point', {"result": this.result});
             }
         };
 
@@ -112,8 +121,8 @@ window.exitNeuron = flight.component(
                 this.teachSelf();
             });
 
-            this.on(document, 'change-weights-on-exit-layer', function() {
-                this.changeWeightsOnFinishTeachIteration();
+            this.on(document, 'change-weights-on-exit-layer', function(e, data) {
+                this.changeWeightsOnFinishTeachIteration(data);
             });
 
 
