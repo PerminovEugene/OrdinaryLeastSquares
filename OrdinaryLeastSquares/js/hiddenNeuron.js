@@ -12,12 +12,24 @@ window.hiddenNeuron = flight.component(
         this.weight = undefined;
 
         this.initWeight = function () {
-            this.weight = Math.random() * -0.5;
+            this.weight = Math.random() - 0.5;
         };
 
 
-        this.startThink = function (e, data) {
-            console.log('me thinked on layer ' + this.layer);
+        this.startThink = function (data) {
+
+            var y = data['ySignal'];
+            this.summ = y * globalWeights1[0][this.id];
+            this.summ += this.weight;
+            y = this.useActivateFunction(this.summ);
+            var newData = {};
+            newData['ySignal'] = y;
+            newData['from'] = this.id;
+            this.summ = 0;
+//            console.log('think-hidden-neuro');
+            data = null
+            $('body').trigger(this.eventForSendResult, newData);
+
         };
 
         this.useActivateFunction = function (arg) {
@@ -38,11 +50,10 @@ window.hiddenNeuron = flight.component(
         this.teachSelf = function (data) {
             var y = data['ySignal'];
             this.previosLayerValues[data["from"]] = y;
-
-            this.summ = y * globalWeights1[data["from"]][this.id];
+            this.summ = y * globalWeights1[0][this.id];
             this.signalsCounter++;
 //            console.log('hidden signals '+ this.signalsCounter + ' in ' + this.id)
-            if (this.signalsCounter == neuronsOnLayer) {
+            if (this.signalsCounter == enterNeuronsOnLayer) {
                 this.summ += this.weight;
                 y = this.useActivateFunction(this.summ);
                 var newData = {};
@@ -60,27 +71,25 @@ window.hiddenNeuron = flight.component(
         this.deltaWeightJK = {};
         this.startBackForwardTeach = function (data) {
             this.errorsCounter += 1;
-            this.errorsSumm += data['sigmaError'] * globalWeights1[this.id][data['from']];
+            this.errorsSumm += data['sigmaError'] * globalWeights1[0][this.id];
             if (this.errorsCounter == 1) {
                 var error = this.errorsSumm * this.useActivateFunctionForBackForward(this.summ);
 
                 this.errorsCounter = 0;
 
-                for (var i = 0; i < neuronsOnLayer; i++ ) {
+                for (var i = 0; i < enterNeuronsOnLayer; i++ ) {
                     this.deltaWeightJK[i] = speedOfLearning * error * this.previosLayerValues[i];
-                    globalWeights1[data["from"]][this.id] += this.deltaWeightJK[i];
+                    globalWeights1[0][this.id] += this.deltaWeightJK[i];
                 }
                 this.weight = speedOfLearning * error;
                 this.summ = 0;
                 this.errorsCounter = 0;
                 this.errorsSumm = 0;
+                this.previosLayerValues = {}
+                this.deltaWeightJK = {};
                 $(document).trigger('change-weights-on-exit-layer', {'from': this.id});
             }
         };
-
-        this.startTeach = function (data) {
-            debugger
-        }
 
 
         return this.after('initialize', function() {
@@ -100,13 +109,10 @@ window.hiddenNeuron = flight.component(
                 this.startBackForwardTeach(data);
             });
 
-            this.on(document, eventForInputResult, function() {
-                this.startThink();
+            this.on(document, eventForInputResult, function(e, data) {
+                this.startThink(data);
             });
 
-            this.on(document, eventForInputResult, function(e, data) {
-                this.startTeach(data);
-            });
 
             this.on(document, eventForInputResultTeach, function(e, data) {
                 this.teachSelf(data);

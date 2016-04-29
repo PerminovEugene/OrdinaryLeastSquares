@@ -11,16 +11,24 @@ window.enterNeuron = flight.component(
     this.weight = undefined;
 
     this.initWeight = function () {
-        this.weight = Math.random() * -0.5;
+        this.weight = Math.random() -0.5;
     };
 
 
-    this.startThink = function (e, data) {
-       console.log('me thinked on layer ' + this.layer);
+    this.startThink = function (data) {
+
+        var toNextLayerData = {};
+        if (data) {
+            toNextLayerData["ySignal"] = data['x'];
+            toNextLayerData["from"] = this.id;
+//            console.log('think-enter-neuro');
+            data = null
+            $(document).trigger(this.eventForSendResult, toNextLayerData)
+        }
     };
 
     this.teachSelf = function (e, data) {
-        console.log('me teached on layer ' + this.layer);
+//        console.log('me teached on layer ' + this.layer);
     };
 
     this.startTeach = function (data) {
@@ -44,16 +52,15 @@ window.enterNeuron = flight.component(
         this.eventForSendResultTeach = 'to-' + nextLayer + "-teach";
         var eventForTeachSelf = 'teach-' + this.layer;
 
-        this.on(document, eventForInputResult, function() {
-            this.startThink();
+        this.on(document, eventForInputResult, function(e, data) {
+            this.startThink(data);
         });
         this.on(document, eventForTeachSelf, function() {
             this.teachSelf();
         });
-        this.on (document, 'start-teach', function(e, data) {
+        this.on (document, 'start-teach1', function(e, data) {
             this.startTeach(data);
         });
-        console.log('enter neuron ' + this.layer + this.id + " there!")
         this.initWeight();
     });
 });

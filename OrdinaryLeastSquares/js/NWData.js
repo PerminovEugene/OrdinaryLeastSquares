@@ -75,13 +75,13 @@ window.NWDataMixin = function() {
         this.pointsData = [];
         this.pointsData.push({ label: "Source points", data: this.sourcePoints, points: { show: true, radius: 2, lineWidth: 5, fill: false } });
 
-        if (this.resultPoints.length > 0) {
-            this.pointsData.push( { label: "Finded function", data: this.resultPoints, lines: { show: true, fill: false } });
+        if (this.approximationPoints.length > 0) {
+            this.pointsData.push( { label: "Finded function", data: this.approximationPoints, lines: { show: true, fill: false } });
         }
-        if (this.select('showSourceFunctionCheckbox')[0].checked) {
-            this.generateSourceFunctionGraphic();
-            this.pointsData.push( { label: "Source function", data: this.sourceGraphicPoints, lines: { show: true, fill: false } } )
-        }
+//        if (this.select('showSourceFunctionCheckbox')[0].checked) {
+//            this.generateSourceFunctionGraphic();
+//            this.pointsData.push( { label: "Source function", data: this.sourceGraphicPoints, lines: { show: true, fill: false } } )
+//        }
     };
     this.generateNW = function() {
 //        this.resultCrossValidationPoints = [];
@@ -89,13 +89,9 @@ window.NWDataMixin = function() {
         this.generateSourcePoints();
         var event = 'generate-web';
         this.trigger(event);
-//        if (this.select('completeStandartAndCrossCheckbox')[0].checked) {
-//            var event = 'start-algorithm-standart';
-//            this.trigger(event);
-//        }
 
-//        this.componateAllPointsData();
-//        this.trigger('redraw-graph');
+        this.componateAllPointsData();
+        this.trigger('redraw-graph');
     };
 
     this.getDataAboutNW = function() {

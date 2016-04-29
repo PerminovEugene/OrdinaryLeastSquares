@@ -13,17 +13,29 @@ window.exitNeuron = flight.component(
         this.weight = undefined;
 
         this.initWeight = function () {
-            this.weight = Math.random() * -0.5;
+            this.weight = Math.random() - 0.5;
         };
 
 
-        this.startThink = function (e, data) {
-            console.log('me thinked on layer ' + this.layer);
+        this.startThink = function (data) {
+
+            var y = data['ySignal'];
+            var newData = {};
+            this.summ = y * globalWeights2[data["from"]][this.id];
+            this.signalsCounter += 1;
+            data = null
+            if (this.signalsCounter === neuronsOnLayer) {
+                this.summ += this.weight;
+                y = this.useActivateFunction(this.summ);
+                this.result = y;
+                newData['ySignal'] = y;
+                this.signalsCounter = 0;
+                this.summ = 0
+//                console.log('think-exit-neuro');
+                $('body').trigger(this.eventForSendResult, newData);
+            }
         };
 
-        this.teachSelf = function (e, data) {
-            console.log('me teached on layer ' + this.layer);
-        };
 
         this.useActivateFunction = function (arg) {
             var result = 1 / (1 + Math.exp(arg * (-1)));
@@ -53,11 +65,11 @@ window.exitNeuron = flight.component(
                 y = this.useActivateFunction(this.summ);
                 var newData = {};
                 this.result = y;
-                newData['ySignal'] = y;
-                newData['xSourceCoordinate'] = data['xSourceCoordinate'];
-                newData['ySourceCoordinate'] = data['ySourceCoordinate'];
-                newData['teachIteration'] = this.teachIteration;
-                $(document).trigger(this.eventForSendTeachIterationResult, newData);
+//                newData['ySignal'] = y;
+//                newData['xSourceCoordinate'] = data['xSourceCoordinate'];
+//                newData['ySourceCoordinate'] = data['ySourceCoordinate'];
+//                newData['teachIteration'] = this.teachIteration;
+//                $(document).trigger(this.eventForSendTeachIterationResult, newData);
 
 //                Back forward
 
@@ -106,8 +118,8 @@ window.exitNeuron = flight.component(
 
             var eventForTeachSelf = 'teach-' + this.layer;
 
-            this.on(document, eventForInputResult, function() {
-                this.startThink();
+            this.on('body', eventForInputResult, function(e, data) {
+                this.startThink(data);
             });
             this.on(document, eventForInputResultTeach, function(e, data) {
                 this.teachSelf(data);
